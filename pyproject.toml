@@ -1,0 +1,101 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "earth2studio"
+authors = [
+  { name="NVIDIA PhysicsNeMo Team" },
+]
+description = "Open-source deep-learning framework for exploring, building and deploying AI weather/climate workflows."
+requires-python = ">=3.10"
+license = "Apache-2.0"
+dependencies = [
+    "torch>=2.5.0",
+    "numpy>=1.26",
+    "xarray>=2023.1.0",
+    "h5py>=3.2.0",
+    "h5netcdf>=1.0.0",
+    "tqdm>=4.65.0",
+    "nest-asyncio>=1.6.0",
+    "loguru>=0.7.3",
+    "makani>=0.2.0",
+    "scipy>=1.15.3",
+    "cartopy>=0.25.0",
+    "rich",
+    "cfgrib >= 0.9.10.3",
+    "cftime",
+    "fsspec>=2024.2.0",
+    "s3fs>=2023.5.0",
+    "matplotlib>=3.10.5",
+    "moviepy>=2.2.1",
+    "pip>=25.2",
+    "torch-harmonics>=0.8.0",
+    "streamlit>=1.49.0"
+]
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3 :: Only",
+    "Intended Audience :: Science/Research",
+    "Environment :: GPU",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Typing :: Typed",
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+fcn = [
+    "nvidia-physicsnemo>=1.0.1",
+]
+fcn3 = [
+    "makani",
+    "ruamel.yaml>=0.18.14",
+]
+sfno = [
+    "makani",
+    "pynvml>=12.0.0",
+    "ruamel-yaml>=0.18.10",
+    "torch-harmonics>=0.8.0",
+]
+
+[tool.uv]
+default-groups = []
+conflicts = []
+no-build-isolation-package = []
+override-dependencies = []
+
+[tool.uv.sources]
+makani = { git = "https://github.com/NVIDIA/makani.git", rev = "49280812513d8f1daf872a2e9343855a6adb3acf"}
+torch = [
+  { index = "pytorch-cpu", marker = "sys_platform != 'linux'" },
+  { index = "pytorch-cu128", marker = "sys_platform == 'linux'" },
+]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
+
+[exclude.uv.workspace]
+members = ["recipes/*"]
+
+[tool.hatch.version]
+path = "src/earth2studio/__init__.py"
+
+[tool.hatch.build.targets.sdist]
+include = ["src/earth2studio/**/*.py"]
+exclude = []
